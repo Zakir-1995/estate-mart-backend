@@ -14,10 +14,10 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(cors('Access-Control-Allow-Origin', '*',{credentials: true}));
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   next();
-// });
+app.use((req, res, next) => {
+res.header('Access-Control-Allow-Origin', '*');
+ next();
+ });
 // connect DB
 mongoose
   .connect(process.env.MONGO_URI)

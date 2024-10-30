@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 
 app.use((req, res, next) => {
-res.header('Access-Control-Allow-Origin',"https://estate-mart.netlify.app");
+res.header('Access-Control-Allow-Origin',"*");
  next();
  });
 // connect DB

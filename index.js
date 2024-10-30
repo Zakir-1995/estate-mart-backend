@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
-
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
@@ -12,13 +12,14 @@ const app = express();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 
-app.use((req, res, next) => {
-res.header('Access-Control-Allow-Origin',"https://estate-mart.netlify.app/");
- res.header('Access-Control-Allow-Credentials',"true");
- next();
- });
+// app.use((req, res, next) => {
+// res.header('Access-Control-Allow-Origin',"https://estate-mart.netlify.app/");
+//  res.header('Access-Control-Allow-Credentials',"true");
+//  next();
+//  });
 // connect DB
 mongoose
   .connect(process.env.MONGO_URI)

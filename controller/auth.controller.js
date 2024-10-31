@@ -133,7 +133,7 @@ export const googleSignin = async (req, res, next) => {
 
       const tokenOption = {
         httpOnly: true,
-        // secure: true,
+        secure: true,
         maxAge: age,
       };
 

@@ -74,8 +74,7 @@ export const Signin = async (req, res, next) => {
     const { password: hashedPassword, ...rest } = user._doc;
     const tokenOption = {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "strict",
+      secure: true,
       maxAge: age,
     };
 
@@ -102,9 +101,9 @@ export const googleSignin = async (req, res, next) => {
         expiresIn: age,
       });
       const tokenOption = {
-        httpOnly: true,
-        // secure: true,
-        maxAge: age,
+      httpOnly: true,
+      secure: true,
+      maxAge: age,
       };
 
       return res.cookie("token", token, tokenOption).json({

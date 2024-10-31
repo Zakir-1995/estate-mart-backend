@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
-// import cors from "cors";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
@@ -12,13 +12,47 @@ const app = express();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
-// app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+const whitelist = [
+  "https://docs-front.azurewebsites.net",
+  "http://localhost:5173",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS ERROR"));
+    }
+  },
+  allowedHeaders: [
+    "Access-Control-Request-Method",
+    "Access-Control-Request-Headers",
+    "Access-Control-Allow-Methods",
+    "Access-Control-Allow-Credentials",
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Origin",
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+    "X-HTTP-Method-Override",
+    "Set-Cookie",
+    "Cookie",
+    "Request",
+    "withCredentials",
+  ],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  origin: ["https://docs-front.azurewebsites.net", "http://localhost:5173"],
+};
+
+app.use(cors(corsOptions));
 
 
-// app.use((req, res, next) => {
-// res.header('Access-Control-Allow-Origin',"*");
-//  next();
-//  });
+
 // connect DB
 mongoose
   .connect(process.env.MONGO_URI)
